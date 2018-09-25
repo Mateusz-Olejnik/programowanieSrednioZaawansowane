@@ -34,7 +34,7 @@ public class TodoApplication {
     }
 
     public void start() {
-        TodoUser currentUser = null;
+        boolean flag = true;
         do {
             Integer menuOption = todoConsoleView.menu();
             switch (menuOption) {
@@ -49,21 +49,24 @@ public class TodoApplication {
                     break;
                 case 4:
                     break;
+                case 0:
                 default:
+                    todoConsoleView.exit();
+                    flag = false;
                     break;
             }
-        } while (true);
+        } while (flag);
 
     }
 
-    private void register(){
+    private void register() {
         String name = todoConsoleView.registerName();
         String password = todoConsoleView.registerPassword();
         TodoUser user = todoService.register(name, password);
 
-        if(user == null){
+        if (user == null) {
             todoConsoleView.displayError("Nie można zarejestrować użytkownika.\n" + "Użytkownik o podanej nazwie już istnieje");
-        }else{
+        } else {
             todoConsoleView.displaySuccess("Udało się zarejestrować nowego użytkownika");
         }
     }

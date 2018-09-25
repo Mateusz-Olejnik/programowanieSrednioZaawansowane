@@ -67,4 +67,8 @@ public class TodoConsoleView {
         System.out.println("SUCCESS");
         System.out.println();
     }
+
+    public void exit() {
+        System.out.println("Zapraszamy ponownie");
+    }
 }

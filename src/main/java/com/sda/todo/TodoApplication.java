@@ -48,6 +48,7 @@ public class TodoApplication {
                     addNewTodo();
                     break;
                 case 4:
+                    showTodoList();
                     break;
                 case 0:
                 default:
@@ -57,6 +58,11 @@ public class TodoApplication {
             }
         } while (flag);
 
+    }
+
+    private void showTodoList() {
+        Integer option = todoConsoleView.showTodoListWithOptions(todoService.findAllTodo());
+        System.out.println("Wybrano opcje " + option);
     }
 
     private void register() {
@@ -93,12 +99,15 @@ public class TodoApplication {
         if (currentUser == null) {
             login();
         }
+        if (currentUser != null) {
 
-        String todoName = todoConsoleView.createNewTodoNanme();
-        String todoDescription = todoConsoleView.createNewTodoDescription();
-        Todo todo = new Todo(todoName, this.currentUser);
-        todo.setDescrtiption(todoDescription);
 
-        todoService.save(todo);
+            String todoName = todoConsoleView.createNewTodoNanme();
+            String todoDescription = todoConsoleView.createNewTodoDescription();
+            Todo todo = new Todo(todoName, this.currentUser);
+            todo.setDescrtiption(todoDescription);
+
+            todoService.save(todo);
+        }
     }
 }

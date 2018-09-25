@@ -9,7 +9,9 @@ import lombok.Setter;
 @Setter
 
 public class TodoUser {
-
+    public static TodoUser unassigned(){
+     return new TodoUser("nieprzypisano",null);
+    }
     private String name;
     private String password;
 

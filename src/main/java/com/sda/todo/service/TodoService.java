@@ -8,6 +8,8 @@ import com.sda.todo.repository.TodoRepository;
 import com.sda.todo.repository.TodoUserRepository;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 public class TodoService {
     private TodoRepository todoRepository;
@@ -35,5 +37,9 @@ public class TodoService {
             throw new InvalidPasswordException("Invalid password");
         }
         return user;
+    }
+
+    public List<Todo> findAllTodo() {
+        return todoRepository.findAll();
     }
 }

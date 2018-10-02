@@ -1,19 +1,31 @@
 package com.sda.todo.service;
 
-import com.sda.todo.model.Todo;
-import com.sda.todo.model.TodoUser;
-import com.sda.todo.model.exception.InvalidPasswordException;
-import com.sda.todo.model.exception.TodoUserDoesNotExistsException;
-import com.sda.todo.repository.TodoRepository;
-import com.sda.todo.repository.TodoUserRepository;
-import lombok.AllArgsConstructor;
+        import com.sda.todo.model.Todo;
+        import com.sda.todo.model.TodoUser;
+        import com.sda.todo.model.exception.InvalidPasswordException;
+        import com.sda.todo.model.exception.TodoUserDoesNotExistsException;
+        import com.sda.todo.repository.TodoRepository;
+        import com.sda.todo.repository.TodoUserRepository;
+        import lombok.AllArgsConstructor;
 
-import java.util.List;
+        import java.util.List;
+        import java.util.Optional;
+        import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class TodoService {
     private TodoRepository todoRepository;
     private TodoUserRepository todoUserRepository;
+
+    public List<Todo> findTodoByCreatorName(String creatorName) {
+        return todoRepository.findAll()
+                .stream()
+                .filter(todo -> todo.getCreator()
+                        .getName()
+                        .equalsIgnoreCase(creatorName))
+                .collect(Collectors.toList());
+
+    }
 
     public void save(Todo todo){
         todoRepository.save(todo);
@@ -41,5 +53,18 @@ public class TodoService {
 
     public List<Todo> findAllTodo() {
         return todoRepository.findAll();
+    }
+
+
+    public Optional<Todo> findTodoById(Integer todoId) {
+        return todoRepository.findById(todoId);
+    }
+
+    public Optional<Todo> removeTodo(Integer todoId) {
+        Optional<Todo> todo = findTodoById(todoId);
+        if (todo.isPresent()) {
+            todoRepository.remove(todoId);
+        }
+        return todo;
     }
 }

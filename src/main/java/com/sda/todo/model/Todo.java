@@ -1,5 +1,6 @@
 package com.sda.todo.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -11,6 +11,7 @@ import com.sda.todo.service.TodoService;
 import lombok.AllArgsConstructor;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Scanner;
 
 @AllArgsConstructor
@@ -62,7 +63,58 @@ public class TodoApplication {
 
     private void showTodoList() {
         Integer option = todoConsoleView.showTodoListWithOptions(todoService.findAllTodo());
-        System.out.println("Wybrano opcje " + option);
+        String possibleId = todoConsoleView.getPossibleId();
+        switch (option) {
+            case 1:
+                showTodo(possibleId);
+                break;
+            case 2:
+                removeTodo(possibleId);
+                break;
+            case 3:
+                assign(possibleId, currentUser);
+                break;
+        }
+    }
+
+    private void assign(String possibleId, TodoUser currentUser) {
+        Integer todoId = extractTodoId(possibleId);
+        Optional<Todo> todo = todoService.findTodoById(todoId);
+        if (todo.isPresent()) {
+            Todo todoToChangeAssigment = todo.get();
+            todoToChangeAssigment.setOwner(currentUser);
+        }
+        todoConsoleView.displayAssignment(todo, currentUser);
+    }
+
+    private void removeTodo(String possibleId) {
+        Integer todoId = extractTodoId(possibleId);
+        Optional<Todo> todo = todoService.removeTodo(todoId);
+        todoConsoleView.showTodoWithDetails(todo);
+    }
+
+    private Integer extractTodoId(String possibleId) {
+        Integer todoId;
+        if (possibleId.length() == 0) {
+            todoId = todoConsoleView.getTodoId() - 1;
+        } else {
+            todoId = Integer.valueOf(possibleId) - 1;
+        }
+        return todoId;
+    }
+
+
+    private void showTodo(String possibleId) {
+        // 1. Wyświetlić 'podaj numer zadania
+        Integer todoId = todoConsoleView.getTodoId() - 1;
+
+        // 2. pobrać zadanie o podanym numerze
+        Optional<Todo> todo = todoService.findTodoById(todoId);
+
+        // 3. wyświetlić zadanie
+        todoConsoleView.showTodoWithDetails(todo);
+
+
     }
 
     private void register() {

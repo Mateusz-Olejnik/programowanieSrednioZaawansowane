@@ -9,6 +9,9 @@ public interface TodoRepository {
     void save(Todo todo);
 
     Optional<Todo> findById(String id);
+    Optional<Todo> findById(Integer id);
 
     List<Todo> findAll();
+
+    void remove(int todoId);
 }

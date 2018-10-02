@@ -101,8 +101,54 @@ public class TodoConsoleView {
         System.out.println("0. Wyjdź");
 
         Integer option = scanner.nextInt();
-        scanner.nextLine();
+        //  scanner.nextLine();
 
         return option;
+    }
+
+
+    public Integer getTodoId() {
+        System.out.println("Podaj numer zadania");
+        int todoId = scanner.nextInt();
+        scanner.nextLine();
+        return todoId;
+    }
+
+    public void showTodoWithDetails(Optional<Todo> todo) {
+        String message = todo.map(e -> {
+            TodoUser creator = e.getCreator();
+            Optional<TodoUser> owner = Optional.ofNullable(e.getOwner());
+            return e.getName() + " (" + e.getTodoStatus().toString() + ") (" + e.getCreationDate().toString() + ") \n" +
+                    e.getDescrtiption() + "\n " +
+                    "Twórca: " + creator.getName() + "\n " +
+                    "Przypisane: " + owner.orElse(TodoUser.unassigned()).getName();
+        }).orElse("Zadanie nie istnieje");
+
+        System.out.println(message);
+    }
+
+
+
+    public String getPossibleId() {
+        String possibleId = scanner.nextLine();
+//        if (possibleId.length() > 0) {
+//            return possibleId.substring(1);
+//        }else{
+//            return possibleId;
+//        }
+//    }
+        return possibleId.length() > 0 ?
+                possibleId.substring(1) :
+                possibleId;
+    }
+
+    public void displayTodoRemove(Optional<Todo> removeTodo) {
+        System.out.println(removeTodo.map(e -> "Usunięto zadanie" + e.getName())
+                .orElse("Zadanie nie istnieje"));
+    }
+
+    public void displayAssignment(Optional<Todo> todo, TodoUser currentUser) {
+        System.out.println(todo.map(e -> "Przypisano " + currentUser.getName() + " do zadania \"" + e.getName() + "\"")
+                .orElse("Zadanie nie istnieje"));
     }
 }
